@@ -1,79 +1,52 @@
 <template>
   <div id="app">
-    <div class="container">
-      <div class="box" v-for="item in list" :key="item.id">
-        <div class="box-image">
-          <img v-lazy="item.src" :alt="item.title">
-        </div>
-        <div class="box-content">
-          <p class="box-content-title">
-            {{item.title}}
-          </p>
-          <p class="box-content-tip">
-            教师：{{item.teacher}}
-          </p>
-        </div>
-      </div>
+    <router-view />
+    <div class="bottom-bar">
+      <div @click="go(1)">懒加载</div>
+      <div @click="go(2)">无限加载</div>
     </div>
+    
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
   name: 'App',
   data() {
     return {
-      list: []
     }
   },
-  async mounted() {
-    try {
-      const res = await axios('http://localhost:3000/imgs')      
-      if(!res.data.ret) {
-        this.list = res.data.data        
+  methods: {
+    go(type) {
+      if(type === 1) {
+        this.$router.push({path: '/lazy'})
+      } else {
+        this.$router.push({path: '/unlimit'})
       }
-    } catch (error) {
-      throw new Error(error)
     }
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
 html,
 body,
-#app,
-.container{
+#app{
  height: 100%;
 }
 
-
-.container {
-  overflow: auto;
-  height: 600px;
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: salmon;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  height: 50px;
+  align-items: center;
 }
 
-.box {
-  padding: 20px;
-  &-image {
-    height: 180px;
-    width: 100%;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  &-content {
-    color: #333;
-    &-title {
-      font-size: 22px;
-      font-weight: bold;
-    }
-    &-tip {
-      color: gray
-    }
-  }
-}
 </style>
