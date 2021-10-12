@@ -9,7 +9,7 @@
     <div class="container">
       <div class="box" v-for="item in list" :key="item.id">
         <div class="box-image">
-          <img v-lazy="item.src" :alt="item.title">
+          <img v-lazyimg="item.src" :alt="item.title">
         </div>
         <div class="box-content">
           <p class="box-content-title">

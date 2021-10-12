@@ -2,7 +2,7 @@
  * @Author: aven9527
  * @Date: 2021-10-12 21:54:32
  * @LastEditors: aven9527
- * @LastEditTime: 2021-10-12 22:49:21
+ * @LastEditTime: 2021-10-12 22:57:13
  * @Description: 无限加载组件
 -->
 
@@ -37,8 +37,7 @@ export default {
             // entry对象
             if(entry.isIntersecting || entry.intersectionRatio > 0) {
                 console.log('交叉了。。。。');
-                // 交叉了， 元素进入视口内
-                
+                // 交叉了， 元素进入视口内                
                 this.$emit('nextLoad')
             }
         }
