@@ -7,16 +7,30 @@
  */
  const unLimit = ()=> import ('../pages/unlimitLoadTest.vue')
  const lazyload = ()=> import('../pages/lazyLoadTest.vue')
- 
+ const lazyCom = ()=> import('../pages/LazyComTest.vue')
  export default [
      {
          path: '/lazy',
          name: 'lazyloadTest',
          component: lazyload,
+         meta: {
+             title: '图片懒加载'
+         }
      },
      {
          path: '/unlimit',
          name: 'unlimitTest',
-         component: unLimit
+         component: unLimit,
+         meta: {
+             title: '无限加载'
+         }
+     },
+     {
+         path: '/lazycom',
+         name: 'LazyComponentTest',
+         component: lazyCom,
+         meta: {
+             title: '组件懒加载'
+         }
      }
  ]

@@ -2,27 +2,26 @@
   <div id="app">
     <router-view />
     <div class="bottom-bar">
-      <div @click="go(1)">懒加载</div>
-      <div @click="go(2)">无限加载</div>
+      <div v-for="(route, key) in routes" :key="key" @click="go(route.path)">
+        {{route.meta.title}}
+      </div>
     </div>
     
   </div>
 </template>
 
 <script>
+import routes from './router'
 export default {
   name: 'App',
   data() {
     return {
+      routes
     }
   },
   methods: {
-    go(type) {
-      if(type === 1) {
-        this.$router.push({path: '/lazy'})
-      } else {
-        this.$router.push({path: '/unlimit'})
-      }
+    go(path) {
+      this.$router.push({path})
     }
   }
 }

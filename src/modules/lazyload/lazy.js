@@ -13,7 +13,11 @@ export default function lazy(Vue) {
         constructor(options) {
             this.options = options
             this.isAddScrollEve = false
+            this.observeEvents = ['scroll, resize']
             this.lazyImgPool = []
+            // 监听元素的队列
+            this.targetQueue = []
+            this.TargetIndex = 0
             this.lazyHandleScroll = throttle(this.handleScroll.bind(this), 1000)
         }
         bindLazy (el, binding, vnode) {
@@ -73,5 +77,61 @@ export default function lazy(Vue) {
             }
             el.setAttribute && el.setAttribute('src', src)
         }
+
+        // 队列里添加懒加载组件
+        addLazyComponent(vm) {
+            this.lazyImgPool.push(vm)       
+            this._addTargetQueue(vm)    
+        }
+
+        _addTargetQueue(el) {
+            if(!el) return
+            const target = this.targetQueue.find(item=> item.el === el)
+            if(target === undefined || !target) {
+                target = {
+                    el,
+                    id: ++this.TargetIndex,
+                    childrenCount: 1,
+                    listened: true
+                }
+                this._initListen(target.el)
+                this.targetQueue.push(el)
+            } else {
+                target.childrenCount ++
+            }
+            return this.TargetIndex
+        }
+
+        _initListen(el) {
+            const supportsPassive = this.testSupportsPassive()
+            this.observeEvents.forEach(eve=> {
+                if(supportsPassive) {
+                    el.addEventListener(eve, this.handleScroll)
+                } else {
+                    el.addEventListener(eve, this.handleScroll, {
+                        capture: false,
+                        passive: true
+                    })
+                }
+            })
+        }
+
+         testSupportsPassive () {
+            //  测试支不支持某个属性的方法
+            if (!inBrowser) return
+            let support = false
+            try {
+              let opts = Object.defineProperty({}, 'passive', {
+                get: function () {
+                  support = true
+                }
+              })
+              window.addEventListener('test', null, opts)
+            } catch (e) {}
+            return support
+          }
+          
+          
+          
     }
 }

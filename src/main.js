@@ -10,6 +10,7 @@ import App from './App.vue'
 import VueLazyload from './modules/lazyload'
 import UnLimitLoad from './modules/unLimitLoad/install.js'
 import LazyImg from './modules/lazyImg'
+import lazyComponent from './modules/lazyComponent/install'
 import VueRouter from 'vue-router'
 import routes from './router'
 Vue.use(UnLimitLoad)
@@ -19,6 +20,7 @@ Vue.use(VueLazyload, {
   preload: 1.3
 })
 Vue.use(LazyImg)
+Vue.use(lazyComponent)
 Vue.use(VueRouter)
 Vue.config.productionTip = false
 const router = new VueRouter({
