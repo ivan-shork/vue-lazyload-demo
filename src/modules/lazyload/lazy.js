@@ -6,7 +6,7 @@
  * @Description: lazy类生成函数
  */
 
-import { parentScroll, throttle } from "./util"
+import { parentScroll, throttle, testSupportsPassive } from "./util"
 import LazyImg from './lazyImg'
 export default function lazy(Vue) {
     return class Lazy {
@@ -54,7 +54,7 @@ export default function lazy(Vue) {
                 // 从未加载过才去加载
                 if(!img.loaded) {
                     let isVisible = img.checkIsVisible() || false
-                    isVisible && img.loadImg()
+                    isVisible && img.load()
                 }
 
             })
@@ -81,12 +81,12 @@ export default function lazy(Vue) {
         // 队列里添加懒加载组件
         addLazyComponent(vm) {
             this.lazyImgPool.push(vm)       
-            this._addTargetQueue(vm)    
+            this._addTargetQueue(vm.$el)    
         }
 
         _addTargetQueue(el) {
             if(!el) return
-            const target = this.targetQueue.find(item=> item.el === el)
+            let target = this.targetQueue.find(item=> item.el === el)
             if(target === undefined || !target) {
                 target = {
                     el,
@@ -103,9 +103,9 @@ export default function lazy(Vue) {
         }
 
         _initListen(el) {
-            const supportsPassive = this.testSupportsPassive()
+            const supportsPassive = testSupportsPassive()
             this.observeEvents.forEach(eve=> {
-                if(supportsPassive) {
+                if(!supportsPassive) {
                     el.addEventListener(eve, this.handleScroll)
                 } else {
                     el.addEventListener(eve, this.handleScroll, {
@@ -116,20 +116,6 @@ export default function lazy(Vue) {
             })
         }
 
-         testSupportsPassive () {
-            //  测试支不支持某个属性的方法
-            if (!inBrowser) return
-            let support = false
-            try {
-              let opts = Object.defineProperty({}, 'passive', {
-                get: function () {
-                  support = true
-                }
-              })
-              window.addEventListener('test', null, opts)
-            } catch (e) {}
-            return support
-          }
           
           
           

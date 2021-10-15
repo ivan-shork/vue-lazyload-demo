@@ -1,6 +1,6 @@
 <template>
   <div>
-    <lazy-component>
+    <lazy-component @success="success">
       <test1 />
     </lazy-component>
     <lazy-component>
@@ -25,6 +25,11 @@ export default {
   components: {
     Test1
   },
+  methods: {
+    success() {
+      console.log('加载成功了');
+    }
+  }
 }
 </script>
 

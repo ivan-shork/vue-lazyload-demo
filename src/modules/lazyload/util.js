@@ -41,3 +41,17 @@
         
     }
  }
+
+ export const testSupportsPassive = ()=> {
+     let support = false
+     try {
+         let opts = Object.defineProperty({}, 'passive', {
+             get() {
+                 support = true
+             }
+         })
+         window.addEventListener('test', null, opts)
+     } catch (error) {    
+     }
+     return support
+ }

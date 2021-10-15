@@ -10,7 +10,7 @@ import App from './App.vue'
 import VueLazyload from './modules/lazyload'
 import UnLimitLoad from './modules/unLimitLoad/install.js'
 import LazyImg from './modules/lazyImg'
-import lazyComponent from './modules/lazyComponent/install'
+import lazyComponent from './modules/lazyload/lazy-component'
 import VueRouter from 'vue-router'
 import routes from './router'
 Vue.use(UnLimitLoad)

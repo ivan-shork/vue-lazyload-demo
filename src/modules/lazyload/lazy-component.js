@@ -8,7 +8,7 @@ const LazyComponent = (lazy)=> {
       }
     },
     render(h, context) {
-      return h(tag, null, this.show ? this.$slots.default : [])
+      return h(this.tag, null, this.show ? this.$slots.default : [])
     },
     data() {
       return {
@@ -18,22 +18,24 @@ const LazyComponent = (lazy)=> {
       }
     },
     mounted() {
-      lazy.addLazyComponent(this.$el)
-      this.getRect()
+      lazy.addLazyComponent(this)
+      lazy.handleScroll()
     },
     methods: {
       getRect() {
         this.rect = this.$el.getBoundingClientRect()
+        console.log(this.rect);
       },
       load() {
         this.show = true
         this.loaded = true
-        this.emit('success', this)
+        this.$emit('success', this)
         
       },
       checkIsVisible() {
+        this.getRect()
         const {top} = this.rect
-        const {preload = 1.3} = this.options        
+        const {preload = 1.3} = lazy.options  
         return top < window.innerHeight * preload
       }
     }

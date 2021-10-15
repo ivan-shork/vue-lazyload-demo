@@ -6,7 +6,9 @@
 
 <script>
 export default {
-
+  mounted() {
+    console.log('加载了');
+  }
 }
 </script>
 

@@ -23,7 +23,7 @@ export default class LazyImg {
         return top < window.innerHeight * preload
     }
 
-    loadImg() {
+    load() {
         // 图片还未渲染出来时先渲染loading
         this.imgRender(this, 'loading')
         this.loadImgSync().then(()=> {
